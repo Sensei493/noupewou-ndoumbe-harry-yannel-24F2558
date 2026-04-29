@@ -1,19 +1,22 @@
-from django.shortcuts import render
-from django.views.generic import TemplateView
-from django.http import JsonResponse
+from pathlib import Path
+from django.http import FileResponse, HttpResponseServerError, JsonResponse
+from django.views import View
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Count, Avg
 from .models import Anime, Collection, Feature
 import json
 
-# Serve React App
-class ReactAppView(TemplateView):
-    template_name = 'index.html'
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
+# Serve React App from the built frontend output
+class ReactAppView(View):
+    def get(self, request, *args, **kwargs):
+        index_path = Path(__file__).resolve().parent.parent / 'static' / 'dist' / 'index.html'
+        try:
+            return FileResponse(index_path.open('rb'), content_type='text/html')
+        except FileNotFoundError:
+            return HttpResponseServerError(
+                'React build not found. Run `npm run build` and deploy the generated `static/dist` files.'
+            )
 
 # API endpoints for React
 def get_anime_list(request):
