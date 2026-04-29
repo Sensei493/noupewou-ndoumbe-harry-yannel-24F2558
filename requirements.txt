@@ -1,0 +1,8 @@
+# Generated from Pipfile.lock
+# Use Python 3.12 as required by your Pipfile
+asgiref==3.11.1
+django==6.0.4
+django-cors-headers==4.9.0
+djangorestframework==3.17.1
+mysqlclient==2.2.8
+sqlparse==0.5.5
