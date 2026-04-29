@@ -28,7 +28,7 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: path.resolve(__dirname, 'static/dist'),
+    outDir: path.resolve(__dirname, 'dist'),
     emptyOutDir: true,
   },
   assetsInclude: ['**/*.svg', '**/*.csv'],

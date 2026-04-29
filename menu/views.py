@@ -10,7 +10,7 @@ import json
 # Serve React App from the built frontend output
 class ReactAppView(View):
     def get(self, request, *args, **kwargs):
-        index_path = Path(__file__).resolve().parent.parent / 'static' / 'dist' / 'index.html'
+        index_path = Path(__file__).resolve().parent.parent / 'dist' / 'index.html'
         try:
             return FileResponse(index_path.open('rb'), content_type='text/html')
         except FileNotFoundError:
