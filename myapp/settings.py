@@ -154,11 +154,26 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS Configuration for React Frontend
-CORS_ALLOWED_ORIGINS = [
+# Base localhost origins always allowed for local development
+_CORS_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:8000",
     "http://127.0.0.1:3000",
     "http://127.0.0.1:8000",
+]
+
+# Allow an explicit production Vercel URL set via environment variable,
+# e.g. VERCEL_URL=https://my-project.vercel.app
+_VERCEL_URL = os.environ.get('VERCEL_URL', '').strip().rstrip('/')
+if _VERCEL_URL:
+    _CORS_ORIGINS.append(_VERCEL_URL)
+
+CORS_ALLOWED_ORIGINS = _CORS_ORIGINS
+
+# Allow all Vercel preview deployments (https://<project>-*.vercel.app)
+# and the canonical production domain (https://<project>.vercel.app)
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r'^https://[\w-]+\.vercel\.app$',
 ]
 
 CORS_ALLOW_CREDENTIALS = True
