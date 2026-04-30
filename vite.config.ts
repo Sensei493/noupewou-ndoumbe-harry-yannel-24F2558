@@ -32,4 +32,6 @@ export default defineConfig({
     emptyOutDir: true,
   },
   assetsInclude: ['**/*.svg', '**/*.csv'],
+  base: process.env.VITE_BASE_PATH || '/noupewou-ndoumbe-harry-yannel-24F2558',
+
 })
