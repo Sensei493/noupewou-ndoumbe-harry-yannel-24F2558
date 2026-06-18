@@ -87,23 +87,21 @@ WSGI_APPLICATION = 'myapp.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASE_URL = os.environ.get('DATABASE_URL')
-if DATABASE_URL:
-    import dj_database_url
+if not DATABASE_URL:
+    raise ValueError(
+        'DATABASE_URL environment variable is not set. '
+        'A PostgreSQL connection string is required to run this application.'
+    )
 
-    DATABASES = {
-        'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600),
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': os.environ.get('DB_ENGINE', 'django.db.backends.mysql'),
-            'NAME': os.environ.get('DB_NAME', 'Anime_collection'),
-            'USER': os.environ.get('DB_USER', 'root'),
-            'PASSWORD': os.environ.get('DB_PASSWORD', 'Harry1234#'),
-            'HOST': os.environ.get('DB_HOST', 'localhost'),
-            'PORT': os.environ.get('DB_PORT', '3306'),
-        }
-    }
+import dj_database_url
+
+DATABASES = {
+    'default': dj_database_url.parse(
+        DATABASE_URL,
+        conn_max_age=600,
+        engine='django.db.backends.postgresql',
+    ),
+}
 
 
 # Password validation
